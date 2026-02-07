@@ -29,20 +29,20 @@ No installation required. You only need Python 3.6+ and Git.
 ## Usage
 
 ```bash
-python3 create_git_graph.py <repo_path> [output_file]
+python3 pyggg.py <repo_path> [output_file]
 ```
 
 ### Examples
 
 ```bash
 # Generate log for current repository
-python3 create_git_graph.py . git_log.txt
+python3 pyggg.py . git_log.txt
 
 # Generate log for a specific repository
-python3 create_git_graph.py /path/to/repo output.txt
+python3 pyggg.py /path/to/repo /path/to/output/repo.git.txt
 
 # If no output file is specified, creates 'git_log_v2.txt'
-python3 create_git_graph.py ~/projects/my-project
+python3 pyggg.py ~/projects/my-project
 ```
 
 ## Graph Symbols
@@ -105,7 +105,7 @@ Each line follows this format:
 git -C /path/to/repo status
 
 # Or use the absolute path
-python3 create_git_graph.py /Users/user/projects/my-repo
+python3 pyggg.py /Users/user/projects/my-repo
 ```
 
 ### Strange characters in output

@@ -6,13 +6,13 @@ Este archivo proporciona orientación a Claude Code sobre el proyecto.
 
 Este proyecto contiene:
 1. **Tig** - Clon del repositorio de Tig (text-mode interface for Git) en la carpeta `tig/`
-2. **create_git_graph.py** - Implementación en Python del algoritmo de visualización de grafos de Tig
+2. **pyggg.py** - Implementación en Python del algoritmo de visualización de grafos de Tig
 
 ## Objetivo Principal
 
 Crear un script Python que genere logs de Git con el mismo formato visual que Tig, replicando exactamente su algoritmo de visualización de grafos (Graph V2).
 
-## Script Principal: create_git_graph.py
+## Script Principal: pyggg.py
 
 ### Descripción
 Implementación completa del algoritmo `graph-v2.c` de Tig en Python. Genera logs de Git con visualización de grafo usando símbolos box-drawing Unicode.
@@ -26,10 +26,10 @@ Implementación completa del algoritmo `graph-v2.c` de Tig en Python. Genera log
 
 ### Uso
 ```bash
-python3 create_git_graph.py <repo_path> [output_file]
+python3 pyggg.py <repo_path> [output_file]
 
 # Ejemplo
-python3 create_git_graph.py repos/gea-arc-tox-capy output.txt
+python3 pyggg.py repos/gea-arc-tox-capy output.txt
 ```
 
 ### Formato de Salida
@@ -213,7 +213,7 @@ Replicar el algoritmo de Tig para generar logs de Git con el formato visual exac
 ### Solución Final
 Descubrimiento clave: Los ejemplos fueron generados con **Graph V2**, no V1.
 
-Al reimplementar Graph V2 completo en `create_git_graph.py`, se logró 100% de precisión en todos los símbolos.
+Al reimplementar Graph V2 completo en `pyggg.py`, se logró 100% de precisión en todos los símbolos.
 
 ## Diferencias Graph V1 vs V2
 
@@ -262,7 +262,7 @@ Se usa `--topo-order` para obtener el orden topológico de commits, lo cual es i
 Para probar que el script funciona correctamente:
 ```bash
 # Generar output
-python3 create_git_graph.py repos/gea-arc-tox-capy test_output.txt
+python3 pyggg.py repos/gea-arc-tox-capy test_output.txt
 
 # Comparar con ejemplo de referencia
 diff ejemplos/gea-arc-tox-capy.tig.txt test_output.txt
@@ -295,7 +295,7 @@ cat ejemplos/gea-arc-tox-capy.tig.txt | head -10 | cat -A
 pruebatig/
 ├── CLAUDE.md                          # Este archivo
 ├── README.md                          # Documentación de usuario
-├── create_git_graph.py                # Script principal ⭐
+├── pyggg.py                # Script principal ⭐
 ├── tig/                               # Repositorio de Tig (clon)
 │   ├── src/graph-v2.c                 # Código fuente original del algoritmo
 │   └── ...
