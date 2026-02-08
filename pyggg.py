@@ -10,6 +10,7 @@ Based on the original C code from Tig's graph-v2.c - https://github.com/jonas/ti
 
 import subprocess
 import sys
+import os
 from typing import List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -895,8 +896,22 @@ def main():
     else:
         # Output to stdout
         output = renderer.render()
-        print(output)
+        try:
+            print(output)
+            sys.stdout.flush()
+        except BrokenPipeError:
+            # Handle broken pipe gracefully (e.g., when piping to head, less, etc.)
+            devnull = os.open(os.devnull, os.O_WRONLY)
+            os.dup2(devnull, sys.stdout.fileno())
+            sys.exit(0)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except BrokenPipeError:
+        # Python flushes standard streams on exit; redirect remaining output
+        # to devnull to avoid another BrokenPipeError at shutdown
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(0)
