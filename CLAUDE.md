@@ -6,10 +6,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **pyGGG** (Python Git Graph Generator) is a Python implementation of Tig's Graph V2 algorithm. It generates Git logs with visual graph representation using Unicode box-drawing characters, matching Tig's exact output format.
 
-## Running the Script
+## Installation
+
+The project includes installation scripts:
 
 ```bash
-# Basic usage
+./install.sh    # Installs ggg and gg commands to ~/.local/bin
+./uninstall.sh  # Removes installed commands
+```
+
+**What gets installed:**
+- `ggg` - Copy of pyggg.py, generates git graph to stdout
+- `gg` - Wrapper script that pipes ggg output to `less -S`
+
+After installation, the cloned repository can be deleted safely.
+
+## Running the Script
+
+### Installed commands (after ./install.sh):
+```bash
+ggg              # Current directory → stdout
+ggg > out.txt    # Current directory → file
+gg               # Current directory → less (interactive)
+```
+
+### Direct script usage:
+```bash
 ./pyggg.py [repo_path] [output_file]
 
 # No arguments: uses current directory, outputs to stdout
@@ -116,7 +138,9 @@ Key files in Tig source:
 
 ```
 pyGGG/
-├── pyggg.py        # Main script (865 lines, complete implementation)
+├── pyggg.py        # Main script (complete Graph V2 implementation)
+├── install.sh      # Installation script (copies to ~/.local/bin)
+├── uninstall.sh    # Uninstallation script
 ├── README.md       # User documentation
 ├── CLAUDE.md       # Development documentation
 └── .gitignore

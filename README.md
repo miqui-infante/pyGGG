@@ -2,6 +2,8 @@
 
 Python script that generates Git logs with graph visualization in [Tig](https://github.com/jonas/tig) format, using Unicode box-drawing characters.
 
+It requires Python 3.6+ and Git, and can be used as a standalone script or installed for easy command-line usage.
+
 ## What does it do?
 
 Converts Git repository history into a visual log with:
@@ -26,9 +28,37 @@ d226456 2025-11-25 17:33 Miqui Infante              M─┤ <1.8.0> Merge pull r
 
 ## Installation
 
-No installation required. You only need Python 3.6+ and Git.
+### Quick Install (Recommended)
 
-## Usage
+```bash
+git clone https://github.com/miqui-infante/pyGGG.git
+cd pyGGG
+./install.sh
+```
+
+This installs two commands in `~/.local/bin`:
+- **`ggg`** - Generate Git Graph (outputs to stdout)
+- **`gg`**  - Git Graph - Interactive viewer (pipes to `less -S`)
+
+After installation, you can delete the cloned repository - the commands will continue to work.
+(You can also keep it if you want to run the script directly from there, or to keep uninstall script for later.)
+
+**Requirements:** Python 3.6+ and Git
+
+### Uninstall
+
+```bash
+./uninstall.sh
+```
+
+Or manually:
+```bash
+rm ~/.local/bin/ggg ~/.local/bin/gg
+```
+
+### Manual Usage (Without Installation)
+
+You can also use the script directly without installing:
 
 ```bash
 ./pyggg.py [repo_path] [output_file]
@@ -38,7 +68,28 @@ No installation required. You only need Python 3.6+ and Git.
 - If `repo_path` provided: uses that repository, outputs to stdout
 - If both provided: uses `repo_path` as repo, outputs to `output_file`
 
-### Examples
+## Usage
+
+### With Installation
+
+```bash
+# Interactive view with less (scroll horizontally with arrow keys)
+gg
+
+# Output to stdout
+ggg
+
+# Save to file
+ggg > git_log.txt
+
+# Pipe to other commands
+ggg | head -20
+
+# Use on a different repository
+cd /path/to/other/repo && gg
+```
+
+### Without Installation
 
 ```bash
 # Generate log for current repository. Output to stdout. No arguments needed!
