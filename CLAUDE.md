@@ -8,12 +8,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Installation
 
-The project includes installation scripts:
+The project includes installation scripts with smart directory detection:
 
 ```bash
-./install.sh    # Installs ggg and gg commands to ~/.local/bin
+./install.sh    # Installs ggg and gg commands
 ./uninstall.sh  # Removes installed commands
 ```
+
+**Smart Installation:**
+The installer automatically finds the best installation directory by checking (priority order):
+1. `~/.local/bin` - XDG standard
+2. `~/bin` - Traditional Unix
+3. `~/opt/bin` - Personal opt
+4. `~/.local/share/bin` - XDG share variant
+5. `/usr/local/bin` - System (if writable)
+6. `/usr/local/share/bin` - System share (if writable)
+7. `/opt/bin` - System opt (if writable)
+
+Logic: Uses first directory that exists, is writable, AND is in PATH. If none in PATH, uses first available and warns to add to PATH. If none exist, creates `~/.local/bin`.
 
 **What gets installed:**
 - `ggg` - Copy of pyggg.py, generates git graph to stdout

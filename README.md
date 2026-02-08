@@ -36,7 +36,18 @@ cd pyGGG
 ./install.sh
 ```
 
-This installs two commands in `~/.local/bin`:
+The installer automatically detects the best location for installation by checking (in order):
+1. `~/.local/bin` (XDG standard)
+2. `~/bin` (traditional)
+3. `~/opt/bin`
+4. `~/.local/share/bin`
+5. `/usr/local/bin` (if writable)
+6. `/usr/local/share/bin` (if writable)
+7. `/opt/bin` (if writable)
+
+It will use the first directory that exists, is writable, and is in your PATH. If none are in PATH, it uses the first available directory and warns you to add it to PATH.
+
+**Installed commands:**
 - **`ggg`** - Generate Git Graph (outputs to stdout)
 - **`gg`**  - Git Graph - Interactive viewer (pipes to `less -S`)
 

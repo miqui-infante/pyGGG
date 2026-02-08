@@ -1,23 +1,50 @@
 #!/bin/bash
 # Uninstallation script for pyGGG
 
-INSTALL_DIR="$HOME/.local/bin"
+# List of candidate directories (same as install.sh)
+CANDIDATES=(
+    "$HOME/.local/bin"
+    "$HOME/bin"
+    "$HOME/opt/bin"
+    "$HOME/.local/share/bin"
+    "/usr/local/bin"
+    "/usr/local/share/bin"
+    "/opt/bin"
+)
 
 echo "pyGGG Uninstallation"
 echo "===================="
 echo
 
-if [ -f "$INSTALL_DIR/ggg" ]; then
-    echo "Removing $INSTALL_DIR/ggg..."
-    rm "$INSTALL_DIR/ggg"
-    echo "✓ Removed ggg"
-fi
+FOUND=false
 
-if [ -f "$INSTALL_DIR/gg" ]; then
-    echo "Removing $INSTALL_DIR/gg..."
-    rm "$INSTALL_DIR/gg"
-    echo "✓ Removed gg"
-fi
+# Search for installed commands in all candidate directories
+for dir in "${CANDIDATES[@]}"; do
+    if [ -f "$dir/ggg" ] || [ -f "$dir/gg" ]; then
+        FOUND=true
 
-echo
-echo "✓ Uninstallation complete!"
+        if [ -f "$dir/ggg" ]; then
+            echo "Removing $dir/ggg..."
+            rm "$dir/ggg"
+            echo "✓ Removed ggg"
+        fi
+
+        if [ -f "$dir/gg" ]; then
+            echo "Removing $dir/gg..."
+            rm "$dir/gg"
+            echo "✓ Removed gg"
+        fi
+
+        echo
+    fi
+done
+
+if [ "$FOUND" = true ]; then
+    echo "✓ Uninstallation complete!"
+else
+    echo "No pyGGG installation found."
+    echo "Searched in:"
+    for dir in "${CANDIDATES[@]}"; do
+        echo "  - $dir"
+    done
+fi
