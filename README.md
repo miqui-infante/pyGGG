@@ -32,17 +32,22 @@ No installation required. You only need Python 3.6+ and Git.
 python3 pyggg.py <repo_path> [output_file]
 ```
 
+If `output_file` is not specified, the output is printed to stdout.
+
 ### Examples
 
 ```bash
-# Generate log for current repository
-python3 pyggg.py . git_log.txt
+# Generate log for current repository. Output to stdout
+./pyggg.py .
 
-# Generate log for a specific repository
-python3 pyggg.py /path/to/repo /path/to/output/repo.git.txt
+# Output to stdout with redirection
+./pyggg.py . > git_log.txt
 
-# If no output file is specified, creates 'git_log_v2.txt'
-python3 pyggg.py ~/projects/my-project
+# Pipe to other commands
+./pyggg.py . | head -20
+
+# Generate log for a specific Git repository
+./pyggg.py /path/to/git/repo > /path/to/output/repo.git.txt
 ```
 
 ## Graph Symbols
@@ -95,7 +100,7 @@ Each line follows this format:
 |------|-----------|
 | `git log --graph` | Simpler, basic ASCII |
 | `tig` | Interactive, requires ncurses |
-| **`pyGGG`** | **Non-interactive, file output, Tig format** |
+| **`pyGGG`** | **Non-interactive, stdout/file output, Tig format** |
 
 ## Troubleshooting
 
