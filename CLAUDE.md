@@ -80,7 +80,7 @@ Remote detection uses a known list: `origin`, `upstream`. If a ref has `/` but d
 
 ### Date Format
 
-Line 737-746: Uses commit date (`%ci`) not author date (`%ai`). Format is `YYYY-MM-DD HH:MM` (no seconds) with timezone.
+Lines 738-759: Uses commit date (`%ci`) not author date (`%ai`). All dates are converted to UTC and displayed as `YYYY-MM-DD HH:MM` (no seconds, no timezone suffix). The conversion happens using Python's `datetime.fromisoformat()` and `astimezone(timezone.utc)`.
 
 ### Git Log Ordering
 

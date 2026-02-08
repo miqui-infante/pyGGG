@@ -14,13 +14,15 @@ Converts Git repository history into a visual log with:
 ## Example Output
 
 ```
-2ebf7c2 2025-12-19 15:31 +0100 miqui                      o [develop] {origin/develop} chore: bump version
-d3e2e5e 2025-12-19 15:02 +0100 Miqui Infante              M─┐ [master] {origin/master} <1.9.0> Merge pull request #14
-4328f73 2025-12-19 14:56 +0100 miqui                      │ o feat: add capy new MVN type
-d226456 2025-11-25 18:33 +0100 Miqui Infante              M─┤ <1.8.0> Merge pull request #13
-3345d78 2025-11-25 18:29 +0100 miqui                      │ o chore: bump version
-6cbc8ac 2025-11-25 18:26 +0100 Javier Lahoz               M─┤ Merge pull request #12
+2ebf7c2 2025-12-19 14:31 miqui                      o [develop] {origin/develop} chore: bump version
+d3e2e5e 2025-12-19 14:02 Miqui Infante              M─┐ [master] {origin/master} <1.9.0> Merge pull request #14
+4328f73 2025-12-19 13:56 miqui                      │ o feat: add capy new MVN type
+d226456 2025-11-25 17:33 Miqui Infante              M─┤ <1.8.0> Merge pull request #13
+3345d78 2025-11-25 17:29 miqui                      │ o chore: bump version
+6cbc8ac 2025-11-25 17:26 Javier Lahoz               M─┤ Merge pull request #12
 ```
+
+**Note:** All timestamps are displayed in UTC.
 
 ## Installation
 
@@ -78,12 +80,11 @@ References appear with different delimiters:
 
 Each line follows this format:
 ```
-<hash> <date> <timezone> <author> <graph> <refs> <message>
+<hash> <date> <author> <graph> <refs> <message>
 ```
 
 - **Hash**: 7 characters of the SHA-1
-- **Date**: Format `YYYY-MM-DD HH:MM`
-- **Timezone**: Format `+HHMM` or `-HHMM`
+- **Date**: Format `YYYY-MM-DD HH:MM` (always in UTC)
 - **Author**: Author name
 - **Graph**: ASCII visualization of commit tree
 - **Refs**: Associated branches, tags, and remotes

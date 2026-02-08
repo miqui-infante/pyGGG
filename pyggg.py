@@ -12,6 +12,7 @@ import subprocess
 import sys
 from typing import List, Optional
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 
 
 @dataclass
@@ -734,17 +735,28 @@ class TigStyleRendererV2:
             message = lines[i + 4].strip()
             refs_line = lines[i + 5].strip()
 
-            # Parse date
-            date_parts = date_line.split()
-            if len(date_parts) >= 2:
-                date_str = date_parts[0]
-                time_parts = date_parts[1].split(':')
-                time_str = f"{time_parts[0]}:{time_parts[1]}" if len(time_parts) >= 2 else date_parts[1]
-                date = f"{date_str} {time_str}"
-                timezone = date_parts[2] if len(date_parts) > 2 else '+0000'
-            else:
-                date = date_line
-                timezone = '+0000'
+            # Parse date and convert to UTC
+            # date_line format: "2025-10-02 12:37:45 +0200"
+            try:
+                # Parse the date with timezone
+                dt = datetime.fromisoformat(date_line.replace(' ', 'T', 1))
+                # Convert to UTC
+                dt_utc = dt.astimezone(timezone.utc)
+                # Format as "YYYY-MM-DD HH:MM"
+                date = dt_utc.strftime('%Y-%m-%d %H:%M')
+                tz = 'Z'
+            except (ValueError, AttributeError):
+                # Fallback if parsing fails
+                date_parts = date_line.split()
+                if len(date_parts) >= 2:
+                    date_str = date_parts[0]
+                    time_parts = date_parts[1].split(':')
+                    time_str = f"{time_parts[0]}:{time_parts[1]}" if len(time_parts) >= 2 else date_parts[1]
+                    date = f"{date_str} {time_str}"
+                    tz = 'Z'
+                else:
+                    date = date_line
+                    tz = 'Z'
 
             # Parse refs
             refs = self._parse_refs(refs_line)
@@ -755,7 +767,7 @@ class TigStyleRendererV2:
                 parents=parents,
                 author=author,
                 date=date,
-                timezone=timezone,
+                timezone=tz,
                 message=message,
                 refs=refs
             )
@@ -833,10 +845,10 @@ class TigStyleRendererV2:
             # Convert symbols to string (use symbol_to_box for standard box-drawing chars)
             graph_str = ''.join(self.graph.symbol_to_box(sym) for sym in canvas_symbols).rstrip()
 
-            # Format output line
+            # Format output line (timezone omitted, all dates are in UTC)
             author = commit.author[:max_author_len].ljust(max_author_len)
             refs_str = ' ' + ' '.join(commit.refs) if commit.refs else ''
-            line = f"{commit.short_hash} {commit.date} {commit.timezone} {author} {graph_str}{refs_str} {commit.message}"
+            line = f"{commit.short_hash} {commit.date} {author} {graph_str}{refs_str} {commit.message}"
             output_lines.append(line)
 
         return '\n'.join(output_lines)
