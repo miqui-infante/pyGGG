@@ -37,6 +37,7 @@ After installation, the cloned repository can be deleted safely.
 
 ### Installed commands (after ./install.sh):
 ```bash
+ggg --help       # Show usage information
 ggg              # Current directory → stdout
 ggg > out.txt    # Current directory → file
 gg               # Current directory → less (interactive)
@@ -44,7 +45,11 @@ gg               # Current directory → less (interactive)
 
 ### Direct script usage:
 ```bash
-./pyggg.py [repo_path] [output_file]
+./pyggg.py [OPTIONS] [--] [repo_path] [output_file]
+
+# Show help
+./pyggg.py --help
+./pyggg.py -h
 
 # No arguments: uses current directory, outputs to stdout
 ./pyggg.py
@@ -56,12 +61,24 @@ gg               # Current directory → less (interactive)
 
 # With both: outputs to file
 ./pyggg.py /path/to/any/git/repo output.txt
+
+# With paths starting with '-' (requires -- separator)
+./pyggg.py -- -weird/repo/path
 ```
+
+**Options:**
+- `-h, --help` - Show usage information
+- `--` - End of options (use if repo path starts with '-')
 
 **Argument logic:**
 - 0 args: current directory → stdout
 - 1 arg: specified repo → stdout (always treated as repo path, never as output file)
 - 2 args: specified repo → specified file
+
+**Option parsing:**
+- Any argument starting with `-` is treated as an option/flag
+- Unknown options show a clear error message with the actual command name used
+- The `--` separator allows using paths that start with `-`
 
 ## Testing the Script
 

@@ -72,9 +72,14 @@ rm ~/.local/bin/ggg ~/.local/bin/gg
 You can also use the script directly without installing:
 
 ```bash
-./pyggg.py [repo_path] [output_file]
+./pyggg.py [OPTIONS] [--] [repo_path] [output_file]
 ```
 
+**Options:**
+- `-h, --help` - Show usage information
+- `--` - End of options (use if repo path starts with '-')
+
+**Arguments:**
 - If no arguments provided: uses current directory as repo, outputs to stdout
 - If `repo_path` provided: uses that repository, outputs to stdout
 - If both provided: uses `repo_path` as repo, outputs to `output_file`
@@ -84,6 +89,9 @@ You can also use the script directly without installing:
 ### With Installation
 
 ```bash
+# Show help
+ggg --help
+
 # Interactive view with less (scroll horizontally with arrow keys)
 gg
 
@@ -103,6 +111,9 @@ cd /path/to/other/repo && gg
 ### Without Installation
 
 ```bash
+# Show help
+./pyggg.py --help
+
 # Generate log for current repository. Output to stdout. No arguments needed!
 ./pyggg.py
 
@@ -114,6 +125,9 @@ cd /path/to/other/repo && gg
 
 # Generate log for a specific Git repository with file output
 ./pyggg.py /path/to/git/repo /path/to/output/repo.git.txt
+
+# Use with paths starting with '-' (requires -- separator)
+./pyggg.py -- -weird/repo/path
 ```
 
 ## Graph Symbols
@@ -190,7 +204,7 @@ cat output.txt
 ## Credits
 
 - Based on the Graph V2 algorithm from [Tig](https://github.com/jonas/tig)
-- Python implementation by Miguel Infante
+- Python implementation by Miqui Infante
 - Original Tig by Jonas Fonseca
 
 ## License

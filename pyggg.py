@@ -862,20 +862,70 @@ class TigStyleRendererV2:
             f.writelines('\n')  # Ensure final newline
 
 
+def print_usage(prog_name):
+    """Print usage information"""
+    usage = f"""{prog_name} - Git Graph Generator (Python implementation of Tig's Graph V2)
+
+USAGE:
+    {prog_name} [OPTIONS] [--] [REPO_PATH] [OUTPUT_FILE]
+
+ARGUMENTS:
+    REPO_PATH       Path to git repository (default: current directory)
+    OUTPUT_FILE     Output file path (default: stdout)
+
+OPTIONS:
+    -h, --help      Show this help message
+    --              End of options (use if repo path starts with '-')
+
+EXAMPLES:
+    {prog_name}                         # Current directory → stdout
+    {prog_name} /path/to/repo           # Specified repo → stdout
+    {prog_name} /path/to/repo out.txt   # Specified repo → file
+    {prog_name} > output.txt            # Current directory → file
+    {prog_name} | less -S               # Pipe to less (or use 'gg' wrapper)
+    {prog_name} -- -weird/repo          # Repo path starting with '-'
+
+INSTALLED COMMANDS:
+    ggg             Generate git graph to stdout
+    gg              Generate git graph and display in less
+
+For more information, see README.md or CLAUDE.md in the repository.
+"""
+    print(usage)
+
+
 def main():
     # Parse arguments
-    if len(sys.argv) == 1:
+    prog_name = os.path.basename(sys.argv[0])  # Get actual command name used
+    args = sys.argv[1:]  # Skip program name
+
+    # Check for flags first (before '--' separator)
+    if args and args[0].startswith('-'):
+        flag = args[0]
+        if flag in ('-h', '--help'):
+            print_usage(prog_name)
+            sys.exit(0)
+        elif flag == '--':
+            # '--' separates options from arguments
+            args = args[1:]  # Remove the '--' itself
+        else:
+            print(f"{prog_name}: unknown option: {flag}", file=sys.stderr)
+            print(f"Try '{prog_name} --help' for more information.", file=sys.stderr)
+            sys.exit(1)
+
+    # Now parse positional arguments (after options/flags)
+    if len(args) == 0:
         # No arguments: use current directory
         repo_path = '.'
         output_file = None
-    elif len(sys.argv) == 2:
+    elif len(args) == 1:
         # One argument: repo path, output to stdout
-        repo_path = sys.argv[1]
+        repo_path = args[0]
         output_file = None
     else:
         # Two or more arguments: repo path and output file
-        repo_path = sys.argv[1]
-        output_file = sys.argv[2]
+        repo_path = args[0]
+        output_file = args[1]
 
     # Check if it's a valid git repository
     try:
