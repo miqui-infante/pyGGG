@@ -10,16 +10,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Basic usage
-python3 pyggg.py <repo_path> [output_file]
+./pyggg.py [repo_path] [output_file]
 
-# If output_file is omitted, output goes to stdout
-./pyggg.py .
-./pyggg.py . > output.txt
-./pyggg.py . | head -20
+# No arguments: uses current directory, outputs to stdout
+./pyggg.py
+./pyggg.py > output.txt
+./pyggg.py | head -20
 
-# Direct file output
+# With repo path: outputs to stdout
+./pyggg.py /path/to/any/git/repo
+
+# With both: outputs to file
 ./pyggg.py /path/to/any/git/repo output.txt
 ```
+
+**Argument logic:**
+- 0 args: current directory → stdout
+- 1 arg: specified repo → stdout (always treated as repo path, never as output file)
+- 2 args: specified repo → specified file
 
 ## Testing the Script
 
@@ -27,12 +35,15 @@ To validate the script works correctly, run it on any Git repository and verify 
 
 ```bash
 # Test on this repository itself
-./pyggg.py .
+./pyggg.py
 
 # Test on another repository and compare with tig
 cd /path/to/test/repo
-/path/to/pyggg.py . > pyggg_output.txt
+pyggg.py > pyggg_output.txt
 tig --all  # Visual comparison (press Shift+X to toggle commit IDs)
+
+# Or test from outside the repo
+/path/to/pyggg.py /path/to/test/repo | diff - <(cd /path/to/test/repo && tig --all)
 ```
 
 ## Architecture

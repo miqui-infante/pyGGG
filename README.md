@@ -29,25 +29,27 @@ No installation required. You only need Python 3.6+ and Git.
 ## Usage
 
 ```bash
-python3 pyggg.py <repo_path> [output_file]
+./pyggg.py [repo_path] [output_file]
 ```
 
-If `output_file` is not specified, the output is printed to stdout.
+- If no arguments provided: uses current directory as repo, outputs to stdout
+- If `repo_path` provided: uses that repository, outputs to stdout
+- If both provided: uses `repo_path` as repo, outputs to `output_file`
 
 ### Examples
 
 ```bash
-# Generate log for current repository. Output to stdout
-./pyggg.py .
+# Generate log for current repository. Output to stdout. No arguments needed!
+./pyggg.py
 
 # Output to stdout with redirection
-./pyggg.py . > git_log.txt
+./pyggg.py > git_log.txt
 
 # Pipe to other commands
-./pyggg.py . | head -20
+./pyggg.py | head -20
 
-# Generate log for a specific Git repository
-./pyggg.py /path/to/git/repo > /path/to/output/repo.git.txt
+# Generate log for a specific Git repository with file output
+./pyggg.py /path/to/git/repo /path/to/output/repo.git.txt
 ```
 
 ## Graph Symbols

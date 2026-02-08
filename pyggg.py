@@ -850,16 +850,35 @@ class TigStyleRendererV2:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python tig_graph_v2.py <repo_path> [output_file]", file=sys.stderr)
+    # Parse arguments
+    if len(sys.argv) == 1:
+        # No arguments: use current directory
+        repo_path = '.'
+        output_file = None
+    elif len(sys.argv) == 2:
+        # One argument: repo path, output to stdout
+        repo_path = sys.argv[1]
+        output_file = None
+    else:
+        # Two or more arguments: repo path and output file
+        repo_path = sys.argv[1]
+        output_file = sys.argv[2]
+
+    # Check if it's a valid git repository
+    try:
+        subprocess.run(['git', '-C', repo_path, 'rev-parse', '--git-dir'],
+                      capture_output=True, text=True, check=True)
+    except subprocess.CalledProcessError:
+        print(f"fatal: not a git repository (or any of the parent directories): .git", file=sys.stderr)
+        sys.exit(1)
+    except FileNotFoundError:
+        print(f"fatal: git command not found", file=sys.stderr)
         sys.exit(1)
 
-    repo_path = sys.argv[1]
     renderer = TigStyleRendererV2(repo_path)
 
-    if len(sys.argv) > 2:
+    if output_file:
         # Output to file
-        output_file = sys.argv[2]
         renderer.render_to_file(output_file)
     else:
         # Output to stdout
